@@ -24,7 +24,7 @@ jobs:
           AWS_USER: ${{ secrets.AWS_USER }}
           AWS_KEY: ${{ secrets.AWS_KEY }}
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $AWS_USER@$AWS_IP "cd /home/$AWS_USER/projects/hng-devops-stage-zero-task && 
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $AWS_USER@$AWS_IP "cd /home/$AWS_USER/projects/hng-devops-stage-two-task && 
           git pull origin main && 
           sudo docker-compose build && 
           sudo docker-compose up -d"
