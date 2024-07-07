@@ -44,8 +44,11 @@ COPY . /code/
 # Expose the application port
 EXPOSE 8000
 
-# Prestart script
-ENTRYPOINT poetry run bash prestart.sh
+## Prestart script
+#ENTRYPOINT poetry run bash prestart.sh
+#
+## Start the application
+#CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level=info", "--reload"]
 
-# Start the application
-CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level=info", "--reload"]
+# Command to run the backend server
+CMD poetry run bash ./prestart.sh;poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
