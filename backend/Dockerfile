@@ -45,7 +45,7 @@ COPY . /code/
 EXPOSE 8000
 
 # Prestart script
-RUN poetry run bash prestart.sh
+ENTRYPOINT poetry run bash prestart.sh
 
 # Start the application
-CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level=info", "--reload"]
