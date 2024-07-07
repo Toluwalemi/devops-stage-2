@@ -1,0 +1,31 @@
+name: Continuous Deployment to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set permissions for EC2 private key
+        run : |
+          echo "${{ secrets.AWS_KEY }}" > ec2-key.pem
+          chmod 600 ec2-key.pem
+
+      - name: Deploy to AWS EC2
+        env:
+          AWS_IP: ${{ secrets.AWS_IP }}
+          AWS_USER: ${{ secrets.AWS_USER }}
+          AWS_KEY: ${{ secrets.AWS_KEY }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $AWS_USER@$AWS_IP "cd /home/$AWS_USER/projects/hng-devops-stage-zero-task && 
+          git pull origin main && 
+          sudo docker-compose build && 
+          sudo docker-compose up -d"
+          rm ec2-key.pem
