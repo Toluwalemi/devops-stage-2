@@ -1,0 +1,61 @@
+version: "3"
+services:
+  hng-db:
+    image: 'postgres:12'
+    hostname: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./backend/.env
+    networks:
+      - network-one
+
+  web:
+    build: backend
+    volumes:
+      - ./backend:/code
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - hng-db
+    networks:
+      - network-one
+
+  hng-adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - hng-db
+    networks:
+      - network-one
+
+  web-ui:
+    build:
+      context: frontend
+    volumes:
+      - ./frontend:/app
+      - node_modules:/usr/src/app/node_modules
+    env_file:
+      - ./frontend/.env
+    networks:
+      network-one:
+    command: ["npm", "run", "dev", "--", "--host"]
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+      - web-ui
+    networks:
+      - network-one
+
+volumes:
+  postgres_data:
+  node_modules:
+
+networks:
+  network-one:
