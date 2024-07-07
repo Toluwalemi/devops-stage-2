@@ -25,6 +25,16 @@ services:
     networks:
       - network-one
 
+  hng-adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - hng-db
+    networks:
+      - network-one
+
+
 volumes:
   postgres_data:
 
