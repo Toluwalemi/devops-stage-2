@@ -41,6 +41,7 @@ services:
     networks:
       network-one:
     command: ["npm", "run", "dev", "--", "--host"]
+
   nginx:
     image: nginx:latest
     ports:
