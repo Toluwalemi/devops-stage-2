@@ -1,0 +1,32 @@
+version: "3"
+services:
+  web:
+    build: backend
+    volumes:
+      - ./backend:/code
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - network-one
+
+  db:
+    image: 'postgres:12'
+    hostname: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./backend/.env
+    ports:
+      - '5434:5432'
+    networks:
+      - network-one
+
+volumes:
+  postgres_data:
+
+networks:
+  network-one:
