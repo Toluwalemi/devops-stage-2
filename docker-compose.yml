@@ -34,9 +34,23 @@ services:
     networks:
       - network-one
 
+  web-ui:
+    build:
+      context: frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - node_modules:/usr/src/app/node_modules
+    env_file:
+      - ./frontend/.env
+    networks:
+      network-one:
+    command: ["npm", "run", "dev", "--", "--host"]
 
 volumes:
   postgres_data:
+  node_modules:
 
 networks:
   network-one:
