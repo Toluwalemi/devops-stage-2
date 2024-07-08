@@ -51,6 +51,20 @@ services:
     depends_on:
       - web
       - web-ui
+      - hng-adminer
+      - proxy-manager
+    networks:
+      - network-one
+
+  proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    restart: always
+    ports:
+      - "8090:8090"
+      - "81:81"
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
     networks:
       - network-one
 
